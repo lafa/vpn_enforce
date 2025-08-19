@@ -25,13 +25,14 @@ sudo ufw allow out on $VPN_INTERFACE from any to any
 
 # to allow reconnect, turning VPN on, to get the gateway addresses 
 # nmcli connection up $VPN_NAME
-IP4=`nmcli --terse --fields vpn.data connection show $VPN_NAME| grep -oP 'remote =\K.*' | sed 's/\\,/,/g' | sed 's/, remote-cert-tls.*$//' | tr ',' '\n' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u`
-echo $IP4
-for IP in $IP4; do
-    sudo ufw allow out on $NET_INTERFACE to $IP
-#    sudo ufw allow in on $NET_INTERFACE from $IP
-#    sudo ufw allow out on $NET_INTERFACE to $IP port 1194 proto udp
-#    sudo ufw allow in on $NET_INTERFACE from $IP port 1194 proto udp
+IP4=`nmcli --terse --fields vpn.data connection show $VPN_NAME| grep -oP 'remote =\K.*' | sed 's/\\,/,/g' | sed 's/, remote-cert-tls.*$//'|tr ',' '\n' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]+' | sort -u`
+
+for ELEM in $IP4; do
+    IP=$(echo $ELEM | cut -d':' -f1)
+    PORT=$(echo $ELEM | cut -d':' -f2)
+    echo "$VPN_NAME $NET_INTERFACE to/from $IP port $PORT proto udp"
+    sudo ufw allow out on $NET_INTERFACE to $IP port $PORT proto udp
+    sudo ufw allow in on $NET_INTERFACE from $IP port $PORT proto udp
 done
 
 sudo ufw enable
