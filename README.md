@@ -24,18 +24,17 @@ The principle behind the following scripts is simply to deny all connection exce
 2. Installing firewall script
 
     ```bash
-    git clone https://github.com/flavienbwk/ubuntu-vpn-killswitch && cd ubuntu-vpn-killswitch
+    git clone https://github.com/lafa/vpn_enforce && cd vpn_enforce
 
     sudo apt-get install ufw -y # Installing UFW
 
     # Copy script files
-    cp firewall.sh ~/firewall.sh
-    cp unfirewall.sh ~/unfirewall.sh
+    cp vpn_enforce.sh ~/vpn_enforce.sh
 
     # Enable firewall for VPN-connections only
     # CONNECT TO YOUR VPN FIRST
-    sudo bash ~/firewall.sh
+    bash vpn_enforce.sh
 
     # Disable firewall to go back to regular connection
-    sudo bash ~/unfirewall.sh
+    sudo ufw disable
     ```
