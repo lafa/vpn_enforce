@@ -19,15 +19,17 @@ sudo ufw default deny incoming
 sudo ufw allow out on $VPN_INTERFACE from any to any
 # sudo ufw allow in on $VPN_INTERFACE from any to any
 
-# dns
+# DNS [NOT recomended]
 # sudo ufw allow 53/udp
+# SSH [NOT recomended]
 # sudo ufw allow ssh
 
-# to allow reconnect, turning VPN on, to get the gateway addresses 
+# Turning VPN on [Optional] 
 # nmcli connection up $VPN_NAME
-IP4=`nmcli --terse --fields vpn.data connection show $VPN_NAME| grep -oP 'remote =\K.*' | sed 's/\\,/,/g' | sed 's/, remote-cert-tls.*$//'|tr ',' '\n' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]+' | sort -u`
+# Extract all gateway adresses and ports from nmcli configuration
+GATEWAYS=`nmcli --terse --fields vpn.data connection show $VPN_NAME| grep -oP 'remote =\K.*' | sed 's/\\,/,/g' | sed 's/, remote-cert-tls.*$//'|tr ',' '\n' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]+' | sort -u`
 
-for ELEM in $IP4; do
+for ELEM in $GATEWAYS; do
     IP=$(echo $ELEM | cut -d':' -f1)
     PORT=$(echo $ELEM | cut -d':' -f2)
     echo "$VPN_NAME $NET_INTERFACE to/from $IP port $PORT proto udp"
