@@ -39,6 +39,6 @@ The principle behind the following scripts is simply to deny all connection exce
     sudo ufw disable
     ```
 3. if you edit the file vpn_enforce.sh
+   
    You can change the NET and VPN interface in the first lines of the script.  
    You can also allow inbound traffic by removing the comments from the file; the default is to allow only outbound traffic.
-   ```
