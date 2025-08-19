@@ -27,6 +27,7 @@ IP4=`nmcli connection show us.protonvpn.udp|grep VPN.GATEWAY|grep -oE '[0-9]{1,3
 echo $IP4
 for IP in $IP4; do
     sudo ufw allow out on $NET_INTERFACE to $IP
+#    sudo ufw allow in on $NET_INTERFACE from $IP
 #    sudo ufw allow out on $NET_INTERFACE to $IP port 1194 proto udp
 #    sudo ufw allow in on $NET_INTERFACE from $IP port 1194 proto udp
 done
