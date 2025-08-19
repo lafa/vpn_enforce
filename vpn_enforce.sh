@@ -1,15 +1,15 @@
 NET_INTERFACE=wlp0s20f3
 VPN_INTERFACE=tun0
 
+sudo ufw disable
+sudo ufw reset
+
 # disable IPV6 traffic - IPV6 is not well supported for VPN
 sudo echo 'net.ipv6.conf.all.disable_ipv6=1' | sudo tee /etc/sysctl.conf
 sudo echo 'net.ipv6.conf.default.disable_ipv6=1' | sudo tee -a /etc/sysctl.conf
 sudo echo 'net.ipv6.conf.lo.disable_ipv6=1' | sudo tee -a /etc/sysctl.conf
 # sudo echo 'net.ipv6.conf.tun0.disable_ipv6=1' | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
-
-sudo ufw disable
-sudo ufw reset
 
 # we should deny here, but ubuntu would be able to connect to wifi or vpn
 sudo ufw default deny outgoing
