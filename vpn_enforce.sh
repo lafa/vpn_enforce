@@ -32,7 +32,7 @@ for ELEM in $IP4; do
     PORT=$(echo $ELEM | cut -d':' -f2)
     echo "$VPN_NAME $NET_INTERFACE to/from $IP port $PORT proto udp"
     sudo ufw allow out on $NET_INTERFACE to $IP port $PORT proto udp
-    sudo ufw allow in on $NET_INTERFACE from $IP port $PORT proto udp
+#    sudo ufw allow in on $NET_INTERFACE from $IP port $PORT proto udp
 done
 
 sudo ufw enable
