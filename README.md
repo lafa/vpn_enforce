@@ -1,8 +1,8 @@
 # vpn_enforce
 Linux shell file to implementing a killswitch when your VPN connection drops.
-This works on ubuntu 25.04 and later, and probably any version of linus using nmcli and ufw.
+This works on ubuntu 25.04 and later, and probably any version of linux using nmcli and ufw.
 
-Configure the NET_INTERFACE, VPN_INTERFACE, VPN_NAME on the top of the script and run the script.
+Please configure the NET_INTERFACE, VPN_INTERFACE, VPN_NAME variables on the top of the script before running it.
 
 ## Principle
 
