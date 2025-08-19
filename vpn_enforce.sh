@@ -1,5 +1,6 @@
 NET_INTERFACE=wlp0s20f3
 VPN_INTERFACE=tun0
+VPN_NAME=us.protonvpn.udp
 
 sudo ufw disable
 sudo ufw reset
@@ -22,8 +23,9 @@ sudo ufw allow out on $VPN_INTERFACE from any to any
 # sudo ufw allow 53/udp
 # sudo ufw allow ssh
 
-# to allow reconnect
-IP4=`nmcli connection show us.protonvpn.udp|grep VPN.GATEWAY|grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'|sort -u`
+# to allow reconnect, turning VPN on, to get the gateway addresses 
+# nmcli connection up $VPN_NAME
+IP4=`nmcli --terse --fields vpn.data connection show $VPN_NAME| grep -oP 'remote =\K.*' | sed 's/\\,/,/g' | sed 's/, remote-cert-tls.*$//' | tr ',' '\n' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u`
 echo $IP4
 for IP in $IP4; do
     sudo ufw allow out on $NET_INTERFACE to $IP
@@ -34,7 +36,3 @@ done
 
 sudo ufw enable
 sudo ufw status verbose
-
-
-
-
